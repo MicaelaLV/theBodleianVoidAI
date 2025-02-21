@@ -13,8 +13,8 @@ const epilogue = Epilogue({
 });
 
 export const metadata: Metadata = {
-  title: "The Librarian",
-  description: "Void generated book recommendations",
+  title: "The Bodleian Void",
+  description: "AI generated book recommendations",
 };
 
 export default function RootLayout({
