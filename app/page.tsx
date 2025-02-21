@@ -99,7 +99,7 @@ export default function Home() {
   return (
     <div className="flex flex-col relative w-full max-w-md py-24 mx-auto stretch gap-6 pb-[200px]">
       {messages.length === 0 && (
-        <div className="text-center text-slate-500">
+        <div className="text-center text-slate-500 serif">
           The intergalactic weather assistant is here to help you with the
           weather and what to wear. Try asking it about the weather in any place
           in the galaxy or what to wear based on the weather. 🪐
