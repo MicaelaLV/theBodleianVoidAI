@@ -1,19 +1,3 @@
-@font-face {
-  font-family: 'Fraunces';
-  src: url('/fonts/Fraunces-Regular.woff2') format('woff2'),
-    url('/fonts/Fraunces-Regular.woff') format('woff');
-  font-weight: 600;
-  font-style: semi-bold;
-}
-
-@font-face {
-  font-family: 'Epilogue';
-  src: url('/fonts/Epilogue-Regular.woff2') format('woff2'),
-    url('/fonts/Epilogue-Regular.woff') format('woff');
-  font-weight: 500;
-  font-style: medium;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -41,20 +25,20 @@ body {
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-    --font-fraunces-serif: 'Fraunces', serif;
+    --font-caudex-serif: 'Caudex', serif;
     --font-epilogue-sans: 'Epilogue', sans-serif;
+    --input: 214.3 31.8% 91.4%;
+    --radius: 0.5rem;
+    --ring: 222.2 84% 4.9%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 249 100% 4%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -71,15 +55,15 @@ body {
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --font-fraunces-serif: 'Fraunces', serif;
+    --font-caudex-serif: 'Caudex', serif;
     --font-epilogue-sans: 'Epilogue', sans-serif;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
   }
 }
 
@@ -93,7 +77,37 @@ body {
     @apply font-epilogue;
   }
 
+  .card {
+    background: rgba(255, 255, 255, .01);
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 24px;
+    box-shadow: inset 0 0 0 8px #ffffff08;
+    height: 100%;
+    padding: 8px;
+
+    .inner {
+      backdrop-filter: blur(15px);
+      /* border: 1px solid tomato; */
+      border-radius: 24px;
+      padding: 32px 24px;
+    }
+  }
+
   .serif {
-    @apply font-fraunces;
+    @apply font-caudex;
+    letter-spacing: -0.032em;
+  }
+
+  .video-wrapper {
+    border: 1px solid tomato;
+    left: 50%;
+    /* height: 578px; */
+    mask-image: radial-gradient(50% 50% at 50% 50%, #fff 60.94%, transparent 100%);
+    mask-size: cover;
+    position: relative;
+    overflow: hidden;
+    /* top: 80px; */
+    transform: translate(-50%);
+    width: 900px;
   }
 }

@@ -1,6 +1,9 @@
 // @/app/page.tsx
 "use client";
 
+// @/app/page.tsx
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,6 +14,7 @@ import type {
   WeatherWear,
   WeatherWearItem,
 } from "./api/chat/route";
+import VideoPlayer from "@/components/ui/video";
 
 type ChatReturnType = ReturnType<typeof useChat>;
 type Message = ChatReturnType["messages"][number];
@@ -97,63 +101,78 @@ export default function Home() {
   }, [messages]); // Scroll when messages change
 
   return (
-    <div className="flex flex-col relative w-full max-w-md py-24 mx-auto stretch gap-6 pb-[200px]">
-      {messages.length === 0 && (
-        <div className="text-center text-slate-500 serif">
-          The intergalactic weather assistant is here to help you with the
-          weather and what to wear. Try asking it about the weather in any place
-          in the galaxy or what to wear based on the weather. 🪐
-        </div>
-      )}
-      {messages.map((m) => (
-        <div key={m.id} className="flex flex-col gap-2 animate-in">
-          {m.role === "user" ? (
-            <div className="flex gap-2">
-              <Avatar>
-                <AvatarImage src="https://mighty.tools/mockmind-api/content/human/80.jpg" />
-                <AvatarFallback>Me</AvatarFallback>
-              </Avatar>
-              <div>{m.content}</div>
-            </div>
-          ) : (
-            <div className="flex gap-2">
-              <Avatar>
-                <AvatarImage src="https://mighty.tools/mockmind-api/content/abstract/50.jpg" />
-                <AvatarFallback>AI</AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                {m.parts?.map((part, index) => (
-                  <MessagePart key={index} part={part} />
-                ))}
+    <div className="flex flex-col relative w-full max-w-md mx-auto stretch gap-6">
+      <div className="absolute inset-0">
+        <VideoPlayer autoplay="autoplay" src="/bodleian.webm" width={'100%'} height={'auto'} />
+      </div>
+      <div className="p-4 flex flex-col relative w-full max-w-md mx-auto stretch gap-6">
+        <h1 className="serif text-3xl text-center p-10">the Bodleian</h1>
+        {messages.length === 0 && (
+          <div className="card text-center text-white text-md serif mt-48">
+            <div className="inner">
+              <div className="flex flex-col justify-center items-center">
+                <p>Ah, a brave soul!</p>
+                <p>You've entered the void searching for your next great read...are you?</p>
+              </div>
+              <div className="flex flex-col justify-center items-center mt-4">
+                <p>I am the keeper of forgotten stories, the curator of literary chaos—the snarky black hole librarian. I know what you seek, and the void is ready to deliver… if you dare.</p>
+              </div>
+              <div className="flex flex-col justify-center items-center mt-4">
+                <p>Now, you have two choices:</p>
               </div>
             </div>
-          )}
-        </div>
-      ))}
+          </div>
+        )}
+        {messages.map((m) => (
+          <div key={m.id} className="flex flex-col gap-2 animate-in">
+            {m.role === "user" ? (
+              <div className="flex gap-2">
+                <Avatar>
+                  <AvatarImage src="https://mighty.tools/mockmind-api/content/human/80.jpg" />
+                  <AvatarFallback>Me</AvatarFallback>
+                </Avatar>
+                <div>{m.content}</div>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <Avatar>
+                  <AvatarImage src="https://mighty.tools/mockmind-api/content/abstract/50.jpg" />
+                  <AvatarFallback>AI</AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  {m.parts?.map((part, index) => (
+                    <MessagePart key={index} part={part} />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
 
-      <div ref={messagesEndRef} />
-      <form
-        onSubmit={handleSubmit}
-        className="fixed bottom-0 z-10 right-0 mb-8 w-full flex items-center justify-center"
-      >
-        <div className="relative w-[480px]">
-          <Textarea
-            className="dark:bg-zinc-900 bg-white/50 backdrop-blur-xl rounded-xl w-full pb-[60px] border border-zinc-300 dark:border-zinc-800 shadow-xl"
-            value={input}
-            rows={3}
-            placeholder="Say something..."
-            onChange={handleInputChange}
-          />
-          <Button
-            type="submit"
-            disabled={status === "streaming"}
-            size="sm"
-            className="absolute bottom-2 right-2"
-          >
-            Send
-          </Button>
-        </div>
-      </form>
+        {/* <div ref={messagesEndRef} />
+        <form
+          onSubmit={handleSubmit}
+          className="fixed bottom-0 z-10 right-0 mb-8 w-full flex items-center justify-center"
+        >
+          <div className="relative w-[480px]">
+            <Textarea
+              className="dark:bg-zinc-900 bg-white/50 backdrop-blur-xl rounded-xl w-full pb-[60px] border border-zinc-300 dark:border-zinc-800 shadow-xl"
+              value={input}
+              rows={3}
+              placeholder="Say something..."
+              onChange={handleInputChange}
+            />
+            <Button
+              type="submit"
+              disabled={status === "streaming"}
+              size="sm"
+              className="absolute bottom-2 right-2"
+            >
+              Send
+            </Button>
+          </div>
+        </form> */}
+      </div>
     </div>
   );
 }

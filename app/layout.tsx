@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import { Fraunces, Epilogue } from "next/font/google";
+import { Epilogue, Caudex } from "next/font/google";
 import "./globals.css";
-
-const fraunces = Fraunces({
-  variable: "--font-fraunces-serif",
-  subsets: ["latin"],
-});
 
 const epilogue = Epilogue({
   variable: "--font-epilogue-sans",
+  subsets: ["latin"],
+});
+
+const caudex = Caudex({
+  variable: "--font-caudex",
+  weight: ['400', '700'],
   subsets: ["latin"],
 });
 
@@ -25,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${fraunces.variable} antialiased`}
+        className={`${caudex.variable} antialiased`}
       >
         {children}
       </body>
