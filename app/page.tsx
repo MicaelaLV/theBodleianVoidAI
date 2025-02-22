@@ -4,6 +4,8 @@
 // @/app/page.tsx
 "use client";
 
+import Typing from "@/components/ui/typed";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -110,8 +112,8 @@ export default function Home() {
         {messages.length === 0 && (
           <div className="card text-center text-white text-md serif mt-48">
             <div className="inner">
-              <div className="flex flex-col justify-center items-center">
-                <p>Ah, a brave soul!</p>
+              <Typing />
+              {/* <div className="mt-4 flex flex-col justify-center items-center">
                 <p>You've entered the void searching for your next great read...are you?</p>
               </div>
               <div className="flex flex-col justify-center items-center mt-4">
@@ -119,7 +121,7 @@ export default function Home() {
               </div>
               <div className="flex flex-col justify-center items-center mt-4">
                 <p>Now, you have two choices:</p>
-              </div>
+              </div> */}
             </div>
           </div>
         )}
