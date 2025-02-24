@@ -1,11 +1,7 @@
 // @/app/page.tsx
 "use client";
 
-// @/app/page.tsx
-"use client";
-
 import Typing from "@/components/ui/typed";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,6 +13,7 @@ import type {
   WeatherWearItem,
 } from "./api/chat/route";
 import VideoPlayer from "@/components/ui/video";
+import intro from "@/public/copy";
 
 type ChatReturnType = ReturnType<typeof useChat>;
 type Message = ChatReturnType["messages"][number];
@@ -110,19 +107,19 @@ export default function Home() {
       <div className="p-4 flex flex-col relative w-full max-w-md mx-auto stretch gap-6">
         <h1 className="serif text-3xl text-center p-10">the Bodleian</h1>
         {messages.length === 0 && (
-          <div className="card text-center text-white text-md serif mt-48">
-            <div className="inner">
-              <Typing />
-              {/* <div className="mt-4 flex flex-col justify-center items-center">
-                <p>You've entered the void searching for your next great read...are you?</p>
-              </div>
-              <div className="flex flex-col justify-center items-center mt-4">
-                <p>I am the keeper of forgotten stories, the curator of literary chaos—the snarky black hole librarian. I know what you seek, and the void is ready to deliver… if you dare.</p>
-              </div>
-              <div className="flex flex-col justify-center items-center mt-4">
-                <p>Now, you have two choices:</p>
-              </div> */}
-            </div>
+          <div className="card text-center text-white text-md serif mt-48 flex flex-col">
+            {intro.map((copy, index) => (
+              <Typing key={index} copy={copy} />
+            ))}
+            <Button
+              type="submit"
+              disabled={status === "streaming"}
+              size="sm"
+              className="mt-4 flex flex-col justify-center"
+            >
+              <h6>Play the Game</h6>
+              <p>Answer a few cryptic questions, and I’ll tailor a selection just for you.</p>
+            </Button>
           </div>
         )}
         {messages.map((m) => (
