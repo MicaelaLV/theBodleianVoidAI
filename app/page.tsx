@@ -13,7 +13,7 @@ import type {
   WeatherWearItem,
 } from "./api/chat/route";
 import VideoPlayer from "@/components/ui/video";
-import intro from "@/public/copy";
+import landingCopy from "@/public/copy";
 
 type ChatReturnType = ReturnType<typeof useChat>;
 type Message = ChatReturnType["messages"][number];
@@ -107,19 +107,10 @@ export default function Home() {
       <div className="p-4 flex flex-col relative w-full max-w-md mx-auto stretch gap-6">
         <h1 className="serif text-3xl text-center p-10">the Bodleian</h1>
         {messages.length === 0 && (
-          <div className="card text-center text-white text-md serif mt-48 flex flex-col">
-            {intro.map((copy, index) => (
-              <Typing key={index} copy={copy} />
-            ))}
-            <Button
-              type="submit"
-              disabled={status === "streaming"}
-              size="sm"
-              className="mt-4 flex flex-col justify-center"
-            >
-              <h6>Play the Game</h6>
-              <p>Answer a few cryptic questions, and I’ll tailor a selection just for you.</p>
-            </Button>
+          <div className="card text-center text-white text-md serif mt-48">
+            <div className="inner">
+              <Typing copy={landingCopy} />
+            </div>
           </div>
         )}
         {messages.map((m) => (
