@@ -46,7 +46,7 @@ const Typing: React.FC<TypingProps> = ({ copy }) => {
   }, []);
 
   return (
-    <div className="mt-4 flex flex-col justify-center items-center word-break" ref={el}>
+    <div className="flex flex-col justify-center items-center" ref={el}>
     </div>
   );
 };
