@@ -19,6 +19,7 @@ type MessagePart = Message["parts"][number];
 const BookResult = ({ result }: { result: BookResult }) => {
   return (
     <div className="rounded-lg bg-violet-950 p-4 my-2">
+      <img src={result.coverImage} alt="book cover image" />
       <p>Name: {result.name}</p>
       <p>Author: {result.author}</p>
       <p>Description: {result.description}</p>
@@ -27,9 +28,12 @@ const BookResult = ({ result }: { result: BookResult }) => {
 };
 
 const MessagePart = ({ part }: { part: MessagePart }) => {
+
   if (!part) return null;
 
+
   if (part.type === "tool-invocation") {
+    console.log('we\'re in ', part, part.toolInvocation);
     const { toolInvocation } = part;
 
     if (
@@ -48,6 +52,7 @@ const MessagePart = ({ part }: { part: MessagePart }) => {
   }
 
   if (part.type === "text") {
+    // console.log('we\'re in text', part, part.text);
     return <div className="text-left">
       {/* <Typing copy={landingCopy} /> */}
       {part.text}
