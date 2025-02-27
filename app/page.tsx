@@ -83,7 +83,7 @@ export default function Home() {
       <div className="p-4 flex flex-col relative w-full max-w-xl mx-auto stretch gap-6">
         <h1 className="serif text-3xl text-center p-12">the Bodleian</h1>
         {messages.length === 0 && (
-          <div className="card text-center text-white text-md sans-serif mt-14">
+          <div className="card text-center text-white text-md serif mt-14">
             <div className="inner">
               <p>Ah, a brave soul!</p>
               <p className="">You've entered the void searching for your next great read...are you?</p>
