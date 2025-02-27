@@ -139,7 +139,7 @@ export default function Home() {
               ) : (
                 <div className="flex gap-2">
                   <Avatar>
-                    <AvatarImage src="bodie.png" />
+                    <AvatarImage src="bodleian.png" />
                     <AvatarFallback>AI</AvatarFallback>
                   </Avatar>
                   <div className="flex-1 align-start">
