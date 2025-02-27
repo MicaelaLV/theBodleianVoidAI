@@ -4,11 +4,13 @@
 import Typing from "@/components/ui/typed";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { RainbowButton } from "@/components/ui/rainbow-button"
 import { Textarea } from "@/components/ui/textarea";
-import { useChat } from "@ai-sdk/react";
-import { useEffect, useRef } from "react";
-import type { BookResult } from "./api/chat/route";
+import { Moon, Sparkles, Sun, ArrowUpRight } from "lucide-react";
 import VideoPlayer from "@/components/ui/video";
+import { useChat } from "@ai-sdk/react";
+import { useEffect, useRef, useCallback } from "react";
+import type { BookResult } from "./api/chat/route";
 // import { Input } from "postcss";
 
 type ChatReturnType = ReturnType<typeof useChat>;
@@ -91,7 +93,7 @@ const MessagePart = ({ part }: { part: MessagePart }) => {
 };
 
 export default function Home() {
-  const { messages, input, status, handleInputChange, handleSubmit } =
+  const { messages, input, status, handleInputChange, handleSubmit, setMessages } =
     useChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -99,113 +101,118 @@ export default function Home() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleReset = useCallback(() => {
+    setMessages([]);
+  }, [setMessages]);
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]); // Scroll when messages change
 
   return (
-    <div className="flex flex-col relative w-full max-w-xl mx-auto stretch gap-6">
-      <div className="absolute inset-0">
-        <VideoPlayer autoplay="autoplay" src="/bodleian.webm" width={'100%'} height={'auto'} />
-      </div>
-      <div className="p-4 flex flex-col relative w-full max-w-xl mx-auto stretch gap-6">
-        <h1 className="serif font-medium
- text-3xl text-center p-12">the Bodleian</h1>
-        {messages.length === 0 && (
-          <div className="card text-center text-white text-md serif mt-14">
-            <div className="inner">
-              <p>Ah, a brave soul!</p>
-              <p className="">You've entered the void searching for your next great read...are you?</p>
-              <p className="">I am the keeper of forgotten stories, the curator of literary chaos, the snarky black hole librarian.</p>
-              <p className="">I know what you seek, and the void is ready to deliver… if you dare...</p>
-              <p className="">Now, you have two choices:</p>
-              <div className="flex flex-col mt-4">
-                <Button
-                  size="lg"
-                  variant={"outline"}
-                  className="mt-4"
-                  onClick={() => {
-                    const event = {
-                      target: {
-                        value: 'Quiz me',
-                      },
-                    } as React.ChangeEvent<HTMLTextAreaElement>;
-                    handleInputChange(event);
-                  }}
-                >
-                  Answer the Void
-                </Button>
-                <Button
-                  size="lg"
-                  variant={"secondary"}
-                  className="mt-6"
-                  onClick={() => {
-                    const event = {
-                      target: {
-                        value: 'What book does the Bodleian recommend?',
-                      },
-                    } as React.ChangeEvent<HTMLTextAreaElement>;
-                    handleInputChange(event);
-                  }}
-                >
-                  Tempt the Singularity
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
-        {messages.length > 0 && (
-          <div className="card text-center text-white text-md serif wrapper">
-            {messages.map((m) => (
-              <div key={m.id} className="flex flex-col gap-2 animate-in mt-4">
-                {m.role === "user" ? (
-                  <div className="rounded-md dark:bg-purple-950 p-2 px-4 sans-serif flex gap-2 items-center flex-row-reverse">
-                    <p>{m.content}</p>
-                  </div>
-                ) : (
-                  <div className="flex gap-2">
-                    <Avatar>
-                      <AvatarImage src="bodie.png" />
-                      <AvatarFallback>AI</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 align-start">
-                      {m.parts?.map((part, index) => (
-                        <MessagePart key={index} part={part} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
-
-        <div ref={messagesEndRef} />
-        <form
-          onSubmit={handleSubmit}
-          className="fixed bottom-0 z-10 right-0 mb-8 w-full flex items-center justify-center p-4"
+    <div className="border border-white flex flex-col relative w-full max-w-md py-24 mx-auto stretch gap-6 pb-[200px]">
+      <div className="flex w-full flex justify-center">
+        <Button
+          size="lg"
+          variant={"ghost"}
+          className="serif font-medium text-3xl text-center mt-4 p-4"
+          onClick={handleReset}
         >
-          <div className="relative w-[552px]">
-            <Textarea
-              className="dark:bg-purple-950 bg-white/50 backdrop-blur-xl rounded-xl w-full pb-[60px] border border-zinc-300 dark:border-zinc-800 shadow-xl sans-serif"
-              value={input}
-              rows={3}
-              placeholder="Say something..."
-              onChange={handleInputChange}
-            />
-            <Button
-              type="submit"
-              disabled={status === "streaming"}
-              size="sm"
-              variant="outline"
-              className="absolute bottom-2 right-2"
-            >
-              Send
-            </Button>
-          </div>
-        </form>
+          the Bodleian
+        </Button>
       </div>
-    </div >
+      {messages.length === 0 && (
+        <div className="inner serif text-center p-16">
+          <p>Ah, a brave soul!</p>
+          <p className="mt-2">You've entered the void searching for your next great read...are you?</p>
+          <p className="mt-2">I am the keeper of forgotten stories, the curator of literary chaos, the black hole librarian.</p>
+          <p className="mt-2">I know what you seek, and this singularity is ready to deliver… if you dare...</p>
+        </div>
+      )}
+      {messages.length > 0 && (
+        <div>
+          {messages.map((m) => (
+            <div key={m.id} className="flex flex-col gap-2 animate-in mt-4">
+              {m.role === "user" ? (
+                <div className="rounded-md dark:bg-purple-950 p-2 px-4 sans-serif flex gap-2 items-center flex-row-reverse">
+                  <p>{m.content}</p>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <Avatar>
+                    <AvatarImage src="bodie.png" />
+                    <AvatarFallback>AI</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 align-start">
+                    {m.parts?.map((part, index) => (
+                      <MessagePart key={index} part={part} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div ref={messagesEndRef} />
+
+      <form
+        onSubmit={handleSubmit}
+        className="fixed bottom-0 z-10 right-0 mb-8 w-full flex items-center justify-center"
+      >
+        <div className="relative w-[456px]">
+          {messages.length === 0 && (
+            <div className="flex flex-col items-center w-full">
+              <RainbowButton onClick={() => {
+                const event = {
+                  target: {
+                    value: 'Quiz me',
+                  },
+                } as React.ChangeEvent<HTMLTextAreaElement>;
+                handleInputChange(event);
+              }}>
+                Answer the Void
+                <ArrowUpRight className="w-3.5 h-3.5 text-white/90 ml-2" />
+              </RainbowButton>
+
+              <RainbowButton
+                className="mt-8 mb-64"
+                onClick={() => {
+                  const event = {
+                    target: {
+                      value: 'Give me a book',
+                    },
+                  } as React.ChangeEvent<HTMLTextAreaElement>;
+                  handleInputChange(event);
+                }}>
+                <Sparkles className="w-3.5 h-3.5 text-white/90 mr-2" />
+                Tempt the Singularity
+              </RainbowButton>
+            </div>
+          )}
+          {messages.length > 0 && (
+            <div className="relative w-full mt-8">
+              <Textarea
+                className="dark:bg-purple-950 bg-white/50 backdrop-blur-xl rounded-xl w-full pb-[60px] border border-zinc-300 dark:border-zinc-800 shadow-xl sans-serif"
+                value={input}
+                rows={3}
+                placeholder="Choose from above or say something of your own..."
+                onChange={handleInputChange}
+              />
+              <Button
+                type="submit"
+                disabled={status === "streaming"}
+                size="sm"
+                variant="outline"
+                className="absolute bottom-2 right-2"
+              >
+                Send
+              </Button>
+            </div>
+          )}
+        </div>
+      </form>
+    </div>
   );
 }

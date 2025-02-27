@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { Epilogue } from "next/font/google";
+import { Outfit } from "next/font/google";
+import { StarsBackground } from "@/components/ui/stars-background";
+import { SplashCursor } from "@/components/ui/splash-cursor";
 import "./globals.css";
 
-const epilogue = Epilogue({
-  variable: "--font-epilogue-sans",
-  subsets: ["latin"],
+const outfit = Outfit({
+  variable: "--font-outfit-sans",
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -20,8 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${epilogue.variable} antialiased`}
+        className={`${outfit.variable} antialiased`}
       >
+        <StarsBackground />
+        <SplashCursor />
+
         {children}
       </body>
     </html>

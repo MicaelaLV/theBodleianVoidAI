@@ -54,11 +54,27 @@ export default {
           '3': 'hsl(var(--chart-3))',
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))'
+        },
+        rainbow: {
+          "1": "hsl(var(--rainbow-1))",
+          "2": "hsl(var(--rainbow-2))",
+          "3": "hsl(var(--rainbow-3))",
+          "4": "hsl(var(--rainbow-4))",
+          "5": "hsl(var(--rainbow-5))",
         }
+      },
+      animation: {
+        rainbow: "rainbow var(--speed, 2s) infinite linear",
+      },
+      keyframes: {
+        rainbow: {
+          "0%": { "background-position": "0%" },
+          "100%": { "background-position": "200%" },
+        },
       },
       fontFamily: {
         lora: ['var(--font-lora-serif)', 'serif'],
-        epilogue: ['var(--font-epilogue-sans)', 'sans-serif'],
+        outfit: ['var(--font-outfit-sans)', 'sans-serif'],
       }
     }
   },
