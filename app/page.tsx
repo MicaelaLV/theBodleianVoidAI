@@ -48,45 +48,53 @@ const MessagePart = ({ part }: { part: MessagePart }) => {
       );
     }
 
-    if (
-      toolInvocation.toolName === "bookQuiz" &&
-      toolInvocation.state === "result"
-    ) {
-      return (
-        <div className="border-l-2 border-violet-400 pl-4 my-2">
-          <p className="text-sm text-slate-400">The Void Quiz Choice</p>
-          <BookResult result={toolInvocation.result} />
-        </div>
-      );
-    }
+    // if (
+    //   toolInvocation.toolName === "bookQuiz" &&
+    //   toolInvocation.state === "result"
+    // ) {
+    //   return (
+    //     <div className="border border-white pl-4 my-2">
+    //       <p className="text-sm text-slate-400">The Void Quiz Choice</p>
+    //       <BookResult result={toolInvocation.result} />
+    //     </div>
+    //   );
+    // }
     return null;
   }
 
 
   if (part.type === "text") {
+    console.log('RESULT IS', part.text);
+
     let jsonArr = [];
 
-    if (part.text.includes('```json')) {
-      let result = part.text.substring(part.text.indexOf('{'));
-      result = result.replaceAll('`', '');
-      console.log(result);
-      const jsonResult = JSON.parse(result);
-      jsonArr = jsonResult.quiz;
-      console.log('JSONARR ', jsonArr);
+    if (part.text) {
+      const index = part.text.indexOf('`');
+      const title = index !== -1 ? part.text.substring(0, index).trim() : part.text;
+
+      if (part.text.includes('```json')) {
+        let result = part.text.substring(part.text.indexOf('{'));
+        result = result.replaceAll('`', '');
+        // console.log(result);
+        const jsonResult = JSON.parse(result);
+        jsonArr = jsonResult.quiz;
+        // console.log('JSONARR ', jsonArr);
+      }
+      // console.log('we\'re in text', part, part.text);
+      return <div className="text-left">
+        <p className="text-white text-base serif pl-4">{title}</p>
+        {jsonArr.map((item: any) => (
+          <div className="pt-2 pl-4 my-2">
+            <p className="text-base text-slate-300">{item.question}</p>
+            {item.options.map((option: any) => (
+              <p className="text-base text-slate-400">{option}</p>
+            ))}
+          </div>
+        ))}
+        {/* {part.text} */}
+      </div>;
     }
-    console.log('we\'re in text', part, part.text);
-    return <div className="text-left">
-      {/* <Typing copy={landingCopy} /> */}
-      {jsonArr.map((item: any) => (
-        <div className="border-l-2 border-violet-400 pl-4 my-2">
-          <p className="text-sm text-slate-400">{item.question}</p>
-          {item.options.map((option: any) => (
-            <p className="text-sm text-slate-400">{option}</p>
-          ))}
-        </div>
-      ))}
-      {part.text}
-    </div>;
+
   }
   return null;
 };
