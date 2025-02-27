@@ -6,11 +6,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { RainbowButton } from "@/components/ui/rainbow-button"
 import { Textarea } from "@/components/ui/textarea";
-import { Moon, Sparkles, Sun, ArrowUpRight } from "lucide-react";
+import { Skeleton } from '@/components/ui/skeleton';
+import { Sparkles, ArrowUpRight } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
 import { useEffect, useRef, useCallback } from "react";
 import type { BookResult } from "./api/chat/route";
-// import { Input } from "postcss";
 
 type ChatReturnType = ReturnType<typeof useChat>;
 type Message = ChatReturnType["messages"][number];
@@ -137,16 +137,29 @@ export default function Home() {
                   <p className="text-end text-base">{m.content}</p>
                 </div>
               ) : (
-                <div className="flex gap-2">
-                  <Avatar>
-                    <AvatarImage src="bodleian.png" />
-                    <AvatarFallback>AI</AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 align-start">
-                    {m.parts?.map((part, index) => (
-                      <MessagePart key={index} part={part} />
-                    ))}
-                  </div>
+                <div className="flex gap-2 p-2 mt-2 mb-2 w-full items-start">
+                  {status === "streaming" && (
+                    <div className="flex items-center space-x-4 width-full items-start">
+                      <Skeleton className="h-12 w-12 rounded-full" />
+                      <div className="space-y-2">
+                        <Skeleton className="h-4 w-[250px]" />
+                        <Skeleton className="h-4 w-[200px]" />
+                      </div>
+                    </div>
+                  )}
+                  {status === "ready" && (
+                    <div className="flex">
+                      <Avatar>
+                        <AvatarImage src="bodleian.png" />
+                        <AvatarFallback>AI</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 align-start">
+                        {m.parts?.map((part, index) => (
+                          <MessagePart key={index} part={part} />
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -196,7 +209,7 @@ export default function Home() {
                 className=" min-h-[none] sans-serif text-base"
                 value={input}
                 rows={3}
-                placeholder="Choose from above or say something of your own..."
+                placeholder="Express your literary desires..."
                 onChange={handleInputChange}
               />
               <Button
