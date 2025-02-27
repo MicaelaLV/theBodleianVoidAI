@@ -4,6 +4,8 @@
 import Typing from "@/components/ui/typed";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { RainbowButton } from "@/components/ui/rainbow-button"
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from '@/components/ui/skeleton';
@@ -48,17 +50,17 @@ const MessagePart = ({ part }: { part: MessagePart }) => {
       );
     }
 
-    // if (
-    //   toolInvocation.toolName === "bookQuiz" &&
-    //   toolInvocation.state === "result"
-    // ) {
-    //   return (
-    //     <div className="border border-white pl-4 my-2">
-    //       <p className="text-sm text-slate-400">The Void Quiz Choice</p>
-    //       <BookResult result={toolInvocation.result} />
-    //     </div>
-    //   );
-    // }
+    if (
+      toolInvocation.toolName === "bookQuiz" &&
+      toolInvocation.state === "result"
+    ) {
+      return (
+        <div className="border border-white pl-4 my-2">
+          <p className="text-sm text-slate-400">The Void Quiz Choice</p>
+          <BookResult result={toolInvocation.result} />
+        </div>
+      );
+    }
     return null;
   }
 
@@ -84,10 +86,12 @@ const MessagePart = ({ part }: { part: MessagePart }) => {
       return <div className="text-left">
         <p className="text-white text-base serif pl-4">{title}</p>
         {jsonArr.map((item: any) => (
-          <div className="pt-2 pl-4 my-2">
+          <div className="p-4 my-4 min-h-[80px] w-full rounded-lg border border-muted bg-background text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70">
             <p className="text-base text-slate-300">{item.question}</p>
             {item.options.map((option: any) => (
-              <p className="text-base text-slate-400">{option}</p>
+              <div className="ml-2 mt-1 flex">
+                <p className="text-base text-slate-400">{option}</p>
+              </div>
             ))}
           </div>
         ))}
@@ -217,7 +221,7 @@ export default function Home() {
                 className=" min-h-[none] sans-serif text-base"
                 value={input}
                 rows={3}
-                placeholder="Express your literary desires..."
+                placeholder="Ask or Answer away..."
                 onChange={handleInputChange}
               />
               <Button
