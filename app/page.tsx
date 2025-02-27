@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { RainbowButton } from "@/components/ui/rainbow-button"
 import { Textarea } from "@/components/ui/textarea";
 import { Moon, Sparkles, Sun, ArrowUpRight } from "lucide-react";
-import VideoPlayer from "@/components/ui/video";
 import { useChat } from "@ai-sdk/react";
 import { useEffect, useRef, useCallback } from "react";
 import type { BookResult } from "./api/chat/route";
@@ -110,7 +109,7 @@ export default function Home() {
   }, [messages]); // Scroll when messages change
 
   return (
-    <div className="border border-white flex flex-col relative w-full max-w-md py-24 mx-auto stretch gap-6 pb-[200px]">
+    <div className="flex flex-col relative w-full max-w-md py-24 mx-auto stretch gap-6 pb-[200px]">
       <div className="flex w-full flex justify-center">
         <Button
           size="lg"
@@ -132,10 +131,10 @@ export default function Home() {
       {messages.length > 0 && (
         <div>
           {messages.map((m) => (
-            <div key={m.id} className="flex flex-col gap-2 animate-in mt-4">
+            <div key={m.id} className="flex flex-col items-end gap-2 animate-in mt-4 width-full">
               {m.role === "user" ? (
-                <div className="rounded-md dark:bg-purple-950 p-2 px-4 sans-serif flex gap-2 items-center flex-row-reverse">
-                  <p>{m.content}</p>
+                <div className="sans-serif flex gap-2 items-start flex-row-reverse max-w-[224] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow">
+                  <p className="text-end text-base">{m.content}</p>
                 </div>
               ) : (
                 <div className="flex gap-2">
@@ -177,7 +176,7 @@ export default function Home() {
               </RainbowButton>
 
               <RainbowButton
-                className="mt-8 mb-64"
+                className="mt-8 mb-72"
                 onClick={() => {
                   const event = {
                     target: {
@@ -194,7 +193,7 @@ export default function Home() {
           {messages.length > 0 && (
             <div className="relative w-full mt-8">
               <Textarea
-                className="dark:bg-purple-950 bg-white/50 backdrop-blur-xl rounded-xl w-full pb-[60px] border border-zinc-300 dark:border-zinc-800 shadow-xl sans-serif"
+                className=" min-h-[none] sans-serif text-base"
                 value={input}
                 rows={3}
                 placeholder="Choose from above or say something of your own..."
