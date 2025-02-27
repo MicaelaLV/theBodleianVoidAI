@@ -57,7 +57,6 @@ export default {
         }
       },
       fontFamily: {
-        caudex: ['var(--font-caudex-serif)', 'serif'],
         lora: ['var(--font-lora-serif)', 'serif'],
         epilogue: ['var(--font-epilogue-sans)', 'sans-serif'],
       }
