@@ -78,6 +78,39 @@ export async function POST(req: Request) {
           return book;
         },
       }),
+      bookQuiz: tool({
+        description: "Get a book recommendation based on the void\’s wisdom after a five-question quiz",
+        parameters: z.object({
+          genre: z.string().describe("Preferred book genre"),
+          mood: z.string().describe("Desired mood or tone of the book"),
+          characterType: z.string().describe("Preferred type of protagonist"),
+          length: z.string().describe("Preferred book length"),
+          theme: z.string().describe("A theme the user enjoys"),
+        }),
+        execute: async ({ genre, mood, characterType, length, theme }) => {
+          const query = `${genre} ${mood} ${characterType} ${length} ${theme}`;
+          const response = await fetch(`${GOOGLE_BOOKS_API}${encodeURIComponent(query)}`);
+          const data = await response.json();
+
+          if (!data.items || data.items.length === 0) {
+            return {
+              name: "No book found",
+              author: "The void is empty",
+              description: "Even the abyss has limits.",
+              coverImage: "https://example.com/default-cover.jpg" // Fallback image
+            };
+          }
+
+          const book = data.items[0].volumeInfo;
+          return {
+            name: book.title,
+            author: book.authors ? book.authors.join(", ") : "Unknown",
+            description: book.description || "No description available",
+            coverImage: book.imageLinks?.thumbnail || "https://example.com/default-cover.jpg"
+          };
+        },
+      }),
+
     },
   });
 

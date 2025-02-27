@@ -52,7 +52,7 @@ const MessagePart = ({ part }: { part: MessagePart }) => {
   }
 
   if (part.type === "text") {
-    // console.log('we\'re in text', part, part.text);
+    console.log('we\'re in text', part, part.text);
     return <div className="text-left">
       {/* <Typing copy={landingCopy} /> */}
       {part.text}
@@ -83,13 +83,13 @@ export default function Home() {
       <div className="p-4 flex flex-col relative w-full max-w-xl mx-auto stretch gap-6">
         <h1 className="serif text-3xl text-center p-12">the Bodleian</h1>
         {messages.length === 0 && (
-          <div className="card text-center text-white text-md serif mt-14">
+          <div className="card text-center text-white text-md sans-serif mt-14">
             <div className="inner">
               <p>Ah, a brave soul!</p>
-              <p className="mt-2">You've entered the void searching for your next great read...are you?</p>
-              <p className="mt-2">I am the keeper of forgotten stories, the curator of literary chaos, the snarky black hole librarian.</p>
-              <p className="mt-2">I know what you seek, and the void is ready to deliver… if you dare...</p>
-              <p className="mt-2">Now, you have two choices:</p>
+              <p className="">You've entered the void searching for your next great read...are you?</p>
+              <p className="">I am the keeper of forgotten stories, the curator of literary chaos, the snarky black hole librarian.</p>
+              <p className="">I know what you seek, and the void is ready to deliver… if you dare...</p>
+              {/* <p className="">Now, you have two choices:</p>
               <div className="flex flex-col mt-4">
                 <Button
                   size="lg"
@@ -105,7 +105,7 @@ export default function Home() {
                 >
                   Tempt the Singularity
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
         )}
@@ -153,7 +153,7 @@ export default function Home() {
               type="submit"
               disabled={status === "streaming"}
               size="sm"
-              variant="default"
+              variant="outline"
               className="absolute bottom-2 right-2"
             >
               Send

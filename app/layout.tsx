@@ -1,15 +1,9 @@
 import type { Metadata } from "next";
-import { Epilogue, Caudex } from "next/font/google";
+import { Epilogue } from "next/font/google";
 import "./globals.css";
 
 const epilogue = Epilogue({
   variable: "--font-epilogue-sans",
-  subsets: ["latin"],
-});
-
-const caudex = Caudex({
-  variable: "--font-caudex",
-  weight: ['400', '700'],
   subsets: ["latin"],
 });
 
@@ -26,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${caudex.variable} antialiased`}
+        className={`${epilogue.variable} antialiased`}
       >
         {children}
       </body>
