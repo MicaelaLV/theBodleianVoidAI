@@ -4,9 +4,7 @@
 import Typing from "@/components/ui/typed";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { GlowEffect } from '@/components/ui/glow-effect';
-import { Label } from "@/components/ui/label";
 import { RainbowButton } from "@/components/ui/rainbow-button"
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from '@/components/ui/skeleton';
@@ -140,48 +138,70 @@ export default function Home() {
   }, [messages]); // Scroll when messages change
 
   return (
-    <div className="flex flex-col relative justify-center w-full max-w-xl py-24 mx-auto stretch gap-6">
+    <div className="border border-pink-300 flex flex-col relative justify-center w-full max-w-xl py-12 mx-auto h-screen stretch gap-6">
       {messages.length === 0 && (
         <div>
           <div className="flex w-full flex justify-center">
             <Typing
               className="text-5xl serif text-white animate-in mb-4"
               copy={[['the Bodleian']]} />
-            {/* <Button
-              size="lg"
-              variant={"ghost"}
-              className="serif font-medium text-3xl text-center mt-4 p-4"
-              onClick={handleReset}
-            >
-              the Bodleian
-            </Button> */}
           </div>
-          <div className="inner serif text-center pt-4 pl-16 pr-16 text-lg">
+          <div className="inner serif text-center pt-4 pl-8 pr-8 text-lg animate-in">
             <p>Ah, a brave soul!</p>
             <p className="mt-2">You've entered the void searching for your next great read...are you?</p>
             <p className="mt-2">I am the keeper of forgotten stories, the curator of literary chaos, the black hole librarian.</p>
             <p className="mt-2">I know what you seek, and this singularity is ready to deliver… if you dare...</p>
           </div>
+          <form
+            onSubmit={handleSubmit}
+            className="mt-8 animate-in"
+          >
+            <div className="flex flex-col items-center w-full">
+              <RainbowButton onClick={() => {
+                const event = {
+                  target: {
+                    value: 'Oh, Bodleian void, could you please serve me with a quiz?',
+                  },
+                } as React.ChangeEvent<HTMLTextAreaElement>;
+                handleInputChange(event);
+              }}>
+                Answer the Void
+                <ArrowUpRight className="w-3.5 h-3.5 text-white/90 ml-2" />
+              </RainbowButton>
+
+              <RainbowButton
+                className="mt-4"
+                onClick={() => {
+                  const event = {
+                    target: {
+                      value: 'Oh, powerful singularity could you please select a book for me in your Void?',
+                    },
+                  } as React.ChangeEvent<HTMLTextAreaElement>;
+                  handleInputChange(event);
+                }}>
+                <Sparkles className="w-3.5 h-3.5 text-white/90 mr-2" />
+                Tempt the Singularity
+              </RainbowButton>
+            </div>
+          </form>
         </div>
       )}
       {messages.length > 0 && (
-        <div className="mb-10">
-          <div className="flex w-full flex justify-between">
+        <div className="mb-10 border border-white">
+          <div className="flex w-full flex justify-between align-center">
             <Typing
-              className="text-4xl serif text-white animate-in mb-2 gradient"
+              className="text-4xl serif text-white animate-in"
               copy={[['the Bodleian']]} />
-            <Button
-              size="sm"
-              variant={"link"}
-              className="font-medium text-base text-left justify-start mt-2"
+            <RainbowButton
+              className="font-medium text-base text-left justify-start"
               onClick={handleReset}
             >
-              <Eraser className="w-3.5 h-3.5 text-white/90" />
-              Clean slate
-            </Button>
+              <Eraser className="w-3.5 h-3.5 text-white/90 mr-2" />
+              Clean Slate
+            </RainbowButton>
           </div>
           {messages.map((m) => (
-            <div key={m.id} className="flex flex-col items-end gap-2 animate-in mt-4 width-full">
+            <div key={m.id} className="flex flex-col items-end gap-2 animate-in mt-12 width-full">
               {m.role === "user" ? (
                 <div className="sans-serif flex gap-2 items-start flex-row-reverse max-w-[400] w-full rounded-lg border border-ring/60 bg-ring/20 px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow">
                   <p className="text-end text-base">{m.content}</p>
@@ -225,35 +245,6 @@ export default function Home() {
         className="fixed bottom-0 z-10 right-0 mb-8 w-full flex items-center justify-center"
       >
         <div className="relative w-[600px]">
-          {messages.length === 0 && (
-            <div className="flex flex-col items-center w-full">
-              <RainbowButton onClick={() => {
-                const event = {
-                  target: {
-                    value: 'Oh, Bodleian void, could you please serve me with a quiz?',
-                  },
-                } as React.ChangeEvent<HTMLTextAreaElement>;
-                handleInputChange(event);
-              }}>
-                Answer the Void
-                <ArrowUpRight className="w-3.5 h-3.5 text-white/90 ml-2" />
-              </RainbowButton>
-
-              <RainbowButton
-                className="mt-8 mb-8"
-                onClick={() => {
-                  const event = {
-                    target: {
-                      value: 'Oh, powerful singularity could you please select a book for me in your Void?',
-                    },
-                  } as React.ChangeEvent<HTMLTextAreaElement>;
-                  handleInputChange(event);
-                }}>
-                <Sparkles className="w-3.5 h-3.5 text-white/90 mr-2" />
-                Tempt the Singularity
-              </RainbowButton>
-            </div>
-          )}
           {messages.length > 0 && (
             <div className="relative w-full mt-8">
               <Textarea
