@@ -126,6 +126,7 @@ export default function Home() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
+    console.log('scrolling to bottom NOW');
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
