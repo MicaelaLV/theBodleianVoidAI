@@ -26,8 +26,9 @@ export default function RootLayout({
       >
         <StarsBackground />
         <SplashCursor />
-
-        {children}
+        <div className="h-screen overflow-hidden">
+          {children}
+        </div>
       </body>
     </html>
   );
