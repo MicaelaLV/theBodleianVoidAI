@@ -167,16 +167,16 @@ export default function Home() {
         <div>
           <div className="flex w-full flex justify-center">
             <Typing
-              className="text-5xl serif text-white animate-in mb-4"
+              className="text-5xl serif text-white mb-4"
               copy={[['the Bodleian']]}
             />
           </div>
           {showButtons && (
-            <div className="inner text-center pt-4 pl-8 pr-8 text-lg transition-opacity">
-              <p className="serif animate-pulse ">Ah, a brave soul!</p>
-              <p className="serif animate-pulse mt-2">You've entered the void searching for your next great read...are you?</p>
-              <p className="serif animate-pulse mt-2">I am the keeper of forgotten stories, the curator of literary chaos, the black hole librarian.</p>
-              <p className="serif animate-pulse mt-2">I know what you seek, and this singularity is ready to deliver… if you dare...</p>
+            <div className="inner text-center pt-4 pl-8 pr-8 lg:pl-16 lg:pr-16 text-lg transition-opacity">
+              <p className="serif ">Ah, a brave soul!</p>
+              <p className="serif mt-2">You've entered the void searching for your next great read...are you?</p>
+              <p className="serif mt-2">I am the keeper of forgotten stories, the curator of literary chaos, the black hole librarian.</p>
+              <p className="serif mt-2">I know what you seek, and this singularity is ready to deliver… if you dare...</p>
               <form
                 onSubmit={handleSubmit}
                 className="mt-8"
@@ -195,7 +195,7 @@ export default function Home() {
                     <ArrowUpRight className="w-3.5 h-3.5 text-white/90 ml-2" />
                   </RainbowButton>
                 </div>
-                <div className="flex flex-col items-center w-full mt-4">
+                <div className="flex flex-col items-center w-full mt-6">
                   <RainbowButton
                     onClick={() => {
                       const event = {
