@@ -5,9 +5,10 @@ import Typed from 'typed.js'
 
 interface TypingProps {
   copy: string[][];
+  className?: string;
 }
 
-const Typing: React.FC<TypingProps> = ({ copy }) => {
+const Typing: React.FC<TypingProps> = ({ copy, className }) => {
   const el = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -46,7 +47,9 @@ const Typing: React.FC<TypingProps> = ({ copy }) => {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center items-center" ref={el}>
+    <div
+      className={className}
+      ref={el}>
     </div>
   );
 };

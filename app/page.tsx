@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { RainbowButton } from "@/components/ui/rainbow-button"
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from '@/components/ui/skeleton';
-import { Sparkles, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Eraser, Sparkles } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
 import { useEffect, useRef, useCallback } from "react";
 import type { BookResult } from "./api/chat/route";
@@ -58,9 +58,11 @@ const MessagePart = ({ part }: { part: MessagePart }) => {
       toolInvocation.state === "result"
     ) {
       return (
-        <div className="pl-4 my-2 mt-6 mb-6 flex flex-col items-center">
-          <p className="text-xl mt-1 serif text-center gradient">The Singularity's Random Pick</p>
-          <BookResult result={toolInvocation.result} />
+        <div className="ml-4 mt-2 flex flex-col items-start">
+          <p className="text-2xl serif text-center gradient">The Singularity's Random Pick</p>
+          <div className="flex flex-col items-center w-full mt-2 mb-8">
+            <BookResult result={toolInvocation.result} />
+          </div>
         </div>
       );
     }
@@ -99,9 +101,9 @@ const MessagePart = ({ part }: { part: MessagePart }) => {
       }
       // console.log('we\'re in text', part, part.text);
       return <div className="text-left">
-        <p className="text-white text-base serif pl-4">{title}</p>
+        <p className="text-white text-lg serif pl-4">{title}</p>
         {jsonArr.map((item: any) => (
-          <div className="p-4 my-4 min-h-[80px] w-full rounded-lg border border-muted bg-background text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70">
+          <div className="p-4 my-4 min-h-[80px] w-full rounded-lg border border-rainbow-4/20 bg-rainbow-4/10 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow placeholder:text-muted-foreground/70">
             <p className="text-base text-slate-300">{item.question}</p>
             {item.options.map((option: any) => (
               <div className="ml-2 mt-1 flex">
@@ -137,27 +139,46 @@ export default function Home() {
   }, [messages]); // Scroll when messages change
 
   return (
-    <div className="flex flex-col relative h-full justify-center w-full max-w-xl py-24 mx-auto stretch gap-6">
-      <div className="flex w-full flex justify-center">
-        <Button
-          size="lg"
-          variant={"ghost"}
-          className="serif font-medium text-3xl text-center mt-4 p-4"
-          onClick={handleReset}
-        >
-          the Bodleian
-        </Button>
-      </div>
+    <div className="flex flex-col relative justify-center w-full max-w-xl py-24 mx-auto stretch gap-6">
       {messages.length === 0 && (
-        <div className="inner serif text-center pt-4 pl-16 pr-16 text-lg">
-          <p>Ah, a brave soul!</p>
-          <p className="mt-2">You've entered the void searching for your next great read...are you?</p>
-          <p className="mt-2">I am the keeper of forgotten stories, the curator of literary chaos, the black hole librarian.</p>
-          <p className="mt-2">I know what you seek, and this singularity is ready to deliver… if you dare...</p>
+        <div>
+          <div className="flex w-full flex justify-center">
+            <Typing
+              className="text-5xl serif text-white animate-in mb-4"
+              copy={[['the Bodleian']]} />
+            {/* <Button
+              size="lg"
+              variant={"ghost"}
+              className="serif font-medium text-3xl text-center mt-4 p-4"
+              onClick={handleReset}
+            >
+              the Bodleian
+            </Button> */}
+          </div>
+          <div className="inner serif text-center pt-4 pl-16 pr-16 text-lg">
+            <p>Ah, a brave soul!</p>
+            <p className="mt-2">You've entered the void searching for your next great read...are you?</p>
+            <p className="mt-2">I am the keeper of forgotten stories, the curator of literary chaos, the black hole librarian.</p>
+            <p className="mt-2">I know what you seek, and this singularity is ready to deliver… if you dare...</p>
+          </div>
         </div>
       )}
       {messages.length > 0 && (
         <div className="mb-10">
+          <div className="flex w-full flex justify-between">
+            <Typing
+              className="text-4xl serif text-white animate-in mb-2 gradient"
+              copy={[['the Bodleian']]} />
+            <Button
+              size="sm"
+              variant={"link"}
+              className="font-medium text-base text-left justify-start mt-2"
+              onClick={handleReset}
+            >
+              <Eraser className="w-3.5 h-3.5 text-white/90" />
+              Clean slate
+            </Button>
+          </div>
           {messages.map((m) => (
             <div key={m.id} className="flex flex-col items-end gap-2 animate-in mt-4 width-full">
               {m.role === "user" ? (
