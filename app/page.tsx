@@ -4,6 +4,7 @@
 
 import Typing from "@/components/ui/typed";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { BlurIn } from "@/components/ui/blur-in";
 import { Button } from "@/components/ui/button";
 import { GlowEffect } from '@/components/ui/glow-effect';
 import { RainbowButton } from "@/components/ui/rainbow-button";
@@ -146,7 +147,7 @@ export default function Home() {
     const timer = setTimeout(() => {
       setTypingComplete(true);
       setShowButtons(true);
-    }, 2000); // Adjust the duration to match your typing animation
+    }, 3000); // Adjust the duration to match your typing animation
 
     return () => clearTimeout(timer);
   }, []);
@@ -172,11 +173,23 @@ export default function Home() {
             />
           </div>
           {showButtons && (
-            <div className="inner text-center pt-4 pl-8 pr-8 lg:pl-16 lg:pr-16 text-lg transition-opacity">
-              <p className="serif ">Ah, a brave soul!</p>
-              <p className="serif mt-2">You've entered the void searching for your next great read...are you?</p>
-              <p className="serif mt-2">I am the keeper of forgotten stories, the curator of literary chaos, the black hole librarian.</p>
-              <p className="serif mt-2">I know what you seek, and this singularity is ready to deliver… if you dare...</p>
+            <div className="inner text-center pt-4 pl-8 pr-8 lg:pl-16 lg:pr-16 text-lg">
+              <BlurIn
+                word="Ah, a brave soul!"
+                className="serif text-lg"
+              />
+              <BlurIn
+                word="You've entered the void searching for your next great read...are you?"
+                className="serif text-lg"
+              />
+              <BlurIn
+                word="I am the keeper of forgotten stories, the curator of literary chaos, the black hole librarian."
+                className="serif text-lg"
+              />
+              <BlurIn
+                word="I know what you seek, and this singularity is ready to deliver… if you dare..."
+                className="serif text-lg"
+              />
               <form
                 onSubmit={handleSubmit}
                 className="mt-8"
