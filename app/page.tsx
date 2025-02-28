@@ -137,7 +137,7 @@ export default function Home() {
   }, [messages]); // Scroll when messages change
 
   return (
-    <div className="flex flex-col relative w-full max-w-md py-24 mx-auto stretch gap-6">
+    <div className="flex flex-col relative h-full justify-center w-full max-w-xl py-24 mx-auto stretch gap-6">
       <div className="flex w-full flex justify-center">
         <Button
           size="lg"
@@ -149,7 +149,7 @@ export default function Home() {
         </Button>
       </div>
       {messages.length === 0 && (
-        <div className="inner serif text-center pt-4 pl-16 pr-16">
+        <div className="inner serif text-center pt-4 pl-16 pr-16 text-lg">
           <p>Ah, a brave soul!</p>
           <p className="mt-2">You've entered the void searching for your next great read...are you?</p>
           <p className="mt-2">I am the keeper of forgotten stories, the curator of literary chaos, the black hole librarian.</p>
@@ -161,7 +161,7 @@ export default function Home() {
           {messages.map((m) => (
             <div key={m.id} className="flex flex-col items-end gap-2 animate-in mt-4 width-full">
               {m.role === "user" ? (
-                <div className="sans-serif flex gap-2 items-start flex-row-reverse max-w-[304] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow">
+                <div className="sans-serif flex gap-2 items-start flex-row-reverse max-w-[400] w-full rounded-lg border border-ring/60 bg-ring/20 px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow">
                   <p className="text-end text-base">{m.content}</p>
                 </div>
               ) : (
@@ -202,7 +202,7 @@ export default function Home() {
 
         className="fixed bottom-0 z-10 right-0 mb-8 w-full flex items-center justify-center"
       >
-        <div className="relative w-[456px]">
+        <div className="relative w-[600px]">
           {messages.length === 0 && (
             <div className="flex flex-col items-center w-full">
               <RainbowButton onClick={() => {
@@ -218,7 +218,7 @@ export default function Home() {
               </RainbowButton>
 
               <RainbowButton
-                className="mt-8 mb-64"
+                className="mt-8 mb-8"
                 onClick={() => {
                   const event = {
                     target: {
@@ -244,9 +244,9 @@ export default function Home() {
               <Button
                 type="submit"
                 disabled={status === "streaming"}
-                size="sm"
+                size="default"
                 variant="outline"
-                className="absolute bottom-2 right-2"
+                className="absolute bottom-2 right-2 ml-4"
               >
                 Send
               </Button>
