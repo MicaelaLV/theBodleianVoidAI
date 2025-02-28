@@ -284,7 +284,7 @@ export default function Home() {
           {showForm && (
             <div>
               <RainbowButton
-                className="font-medium text-base md:text-lg text-left justify-start m-2 px-4 absolute bottom-28 right-10 ml-4"
+                className="font-medium text-base md:text-lg text-left justify-start m-2 px-4 absolute bottom-32 right-8 ml-4"
                 onClick={scrollToBottom}
               >
                 <ArrowDownToLine className="w-5 h-5 text-white/90" />
