@@ -5,6 +5,7 @@ import Typing from "@/components/ui/typed";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { GlowEffect } from '@/components/ui/glow-effect';
 import { Label } from "@/components/ui/label";
 import { RainbowButton } from "@/components/ui/rainbow-button"
 import { Textarea } from "@/components/ui/textarea";
@@ -20,11 +21,25 @@ type MessagePart = Message["parts"][number];
 
 const BookResult = ({ result }: { result: BookResult }) => {
   return (
-    <div className="rounded-lg bg-violet-950 p-4 my-2">
-      <img src={result.coverImage} alt="book cover image" />
-      <p>Name: {result.name}</p>
-      <p>Author: {result.author}</p>
-      <p>Description: {result.description}</p>
+    <div className="">
+      <div className='relative h-full w-full mt-6 mb-4'>
+        <GlowEffect
+          colors={['#0894FF', '#C959DD', '#FF2E54', '#FF9004']}
+          mode='static'
+          blur='medium'
+        />
+        <div className='relative h-full w-full rounded-lg bg-black p-4 text-white dark:bg-card dark:text-white flex flex-col'>
+          <img src={result.coverImage} alt="book cover image" className="rounded-sm" />
+        </div>
+      </div>
+      <div className="ml-2 mt-2">
+        <p className="text-lg mt-2">{result.name}</p>
+        <p className="text-base mt-1">
+          <span className="text-slate-400 mr-1">By</span>
+          {result.author}
+        </p>
+        {/* <p className="mt-2">{result.description}</p> */}
+      </div>
     </div>
   );
 };
@@ -43,8 +58,8 @@ const MessagePart = ({ part }: { part: MessagePart }) => {
       toolInvocation.state === "result"
     ) {
       return (
-        <div className="border-l-2 border-violet-400 pl-4 my-2">
-          <p className="text-sm text-slate-400">The Singularity Choice</p>
+        <div className="pl-4 my-2 mt-6 mb-6 flex flex-col items-center">
+          <p className="text-xl mt-1 serif text-center gradient">The Singularity's Random Pick</p>
           <BookResult result={toolInvocation.result} />
         </div>
       );
@@ -55,8 +70,8 @@ const MessagePart = ({ part }: { part: MessagePart }) => {
       toolInvocation.state === "result"
     ) {
       return (
-        <div className="border border-white pl-4 my-2">
-          <p className="text-sm text-slate-400">The Void Quiz Choice</p>
+        <div className="pl-4 my-2 mt-6 mb-6 flex flex-col items-center">
+          <p className="text-xl mt-1 serif text-center gradient">The Bodleian's Choice</p>
           <BookResult result={toolInvocation.result} />
         </div>
       );
@@ -117,11 +132,12 @@ export default function Home() {
   }, [setMessages]);
 
   useEffect(() => {
+    console.log('messages changed', messages);
     scrollToBottom();
   }, [messages]); // Scroll when messages change
 
   return (
-    <div className="flex flex-col relative w-full max-w-md py-24 mx-auto stretch gap-6 pb-[200px]">
+    <div className="flex flex-col relative w-full max-w-md py-24 mx-auto stretch gap-6">
       <div className="flex w-full flex justify-center">
         <Button
           size="lg"
@@ -133,7 +149,7 @@ export default function Home() {
         </Button>
       </div>
       {messages.length === 0 && (
-        <div className="inner serif text-center p-16">
+        <div className="inner serif text-center pt-4 pl-16 pr-16">
           <p>Ah, a brave soul!</p>
           <p className="mt-2">You've entered the void searching for your next great read...are you?</p>
           <p className="mt-2">I am the keeper of forgotten stories, the curator of literary chaos, the black hole librarian.</p>
@@ -141,11 +157,11 @@ export default function Home() {
         </div>
       )}
       {messages.length > 0 && (
-        <div>
+        <div className="mb-10">
           {messages.map((m) => (
             <div key={m.id} className="flex flex-col items-end gap-2 animate-in mt-4 width-full">
               {m.role === "user" ? (
-                <div className="sans-serif flex gap-2 items-start flex-row-reverse max-w-[224] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow">
+                <div className="sans-serif flex gap-2 items-start flex-row-reverse max-w-[304] w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm shadow-black/5 transition-shadow">
                   <p className="text-end text-base">{m.content}</p>
                 </div>
               ) : (
@@ -183,6 +199,7 @@ export default function Home() {
 
       <form
         onSubmit={handleSubmit}
+
         className="fixed bottom-0 z-10 right-0 mb-8 w-full flex items-center justify-center"
       >
         <div className="relative w-[456px]">
@@ -191,7 +208,7 @@ export default function Home() {
               <RainbowButton onClick={() => {
                 const event = {
                   target: {
-                    value: 'Quiz me',
+                    value: 'Oh, Bodleian void, could you please serve me with a quiz?',
                   },
                 } as React.ChangeEvent<HTMLTextAreaElement>;
                 handleInputChange(event);
@@ -201,11 +218,11 @@ export default function Home() {
               </RainbowButton>
 
               <RainbowButton
-                className="mt-8 mb-72"
+                className="mt-8 mb-64"
                 onClick={() => {
                   const event = {
                     target: {
-                      value: 'Give me a book',
+                      value: 'Oh, powerful singularity could you please select a book for me in your Void?',
                     },
                   } as React.ChangeEvent<HTMLTextAreaElement>;
                   handleInputChange(event);

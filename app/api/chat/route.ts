@@ -106,11 +106,10 @@ export async function POST(req: Request) {
             name: book.title,
             author: book.authors ? book.authors.join(", ") : "Unknown",
             description: book.description || "No description available",
-            coverImage: book.imageLinks?.thumbnail || "https://example.com/default-cover.jpg"
+            coverImage: book.imageLinks?.thumbnail || "https://example.com/default-cover.jpg",
           };
         },
       }),
-
     },
   });
 

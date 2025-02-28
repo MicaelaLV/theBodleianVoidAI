@@ -98,20 +98,20 @@ body {
     letter-spacing: -0.02em;
   }
 
+  .gradient {
+    background-size: 100% 100%;
+    background-position: 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
+    background-image: radial-gradient(113% 91% at 17% -2%, #ED972D 1%, #FF000000 99%), radial-gradient(142% 91% at 83% 7%, #ED2D2D 1%, #FF000000 99%), radial-gradient(41% 77% at 28% 56%, #AAFC11 0%, #073AFF00 100%), radial-gradient(142% 91% at -6% 74%, #2DEDD0 1%, #FF000000 99%), radial-gradient(142% 91% at 111% 84%, #2D6DED 0%, #FF0000FF 100%), radial-gradient(75% 75% at 50% 50%, #8A2DED 0%, #073AFFFF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    width: fit-content;
+  }
+
   @keyframes slidebg {
     to {
       background-position: 20vw;
     }
-  }
-}
-
-
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }
