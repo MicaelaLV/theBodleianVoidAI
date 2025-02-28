@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import { StarsBackground } from "@/components/ui/stars-background";
-import { SplashCursor } from "@/components/ui/splash-cursor";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -25,7 +24,6 @@ export default function RootLayout({
         className={`${outfit.variable} antialiased`}
       >
         <StarsBackground />
-        <SplashCursor />
         <div className="h-screen overflow-hidden">
           {children}
         </div>

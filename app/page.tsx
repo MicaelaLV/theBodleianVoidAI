@@ -2,6 +2,7 @@
 // @/app/page.tsx
 "use client";
 import Typing from "@/components/ui/typed";
+import { SplashCursor } from "@/components/ui/splash-cursor";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BlurIn } from "@/components/ui/blur-in";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,7 @@ import { RainbowButton } from "@/components/ui/rainbow-button";
 import { Textarea as BodleianTextarea } from "@/components/ui/textarea";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowUpRight, Eraser, Sparkles } from "lucide-react";
+import { ArrowDownToLine, ArrowUpRight, Sparkles } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
 import { useEffect, useRef, useCallback, useState } from "react";
 import type { BookResult } from "./api/chat/route";
@@ -49,8 +50,6 @@ const MessagePart = ({ part }: { part: MessagePart }) => {
 
 
   if (part.type === "tool-invocation") {
-    // debugger;
-    console.log('we\'re in ', part, part.toolInvocation);
     const { toolInvocation } = part;
 
     if (
@@ -58,9 +57,9 @@ const MessagePart = ({ part }: { part: MessagePart }) => {
       toolInvocation.state === "result"
     ) {
       return (
-        <div className="ml-4 mt-2 flex flex-col items-start">
-          <p className="text-2xl md:text-3xl serif text-center gradient">The Singularity's Random Pick</p>
-          <div className="flex flex-col items-center w-full mt-2 mb-8">
+        <div className="ml-4 mt-2 flex flex-col items-center">
+          <p className="text-2xl md:text-3xl serif text-center gradient p-4">The Singularity's Random Pick</p>
+          <div className="flex flex-col items-center w-full  mb-8">
             <BookResult result={toolInvocation.result} />
           </div>
         </div>
@@ -73,7 +72,7 @@ const MessagePart = ({ part }: { part: MessagePart }) => {
     ) {
       return (
         <div className="pl-4 my-2 mt-6 mb-6 flex flex-col items-center">
-          <p className="text-2xl md:text-3xl mt-1 serif text-center gradient">The Bodleian's Choice</p>
+          <p className="text-2xl md:text-3xl mt-1 serif text-center gradient p-4">The Bodleian's Choice</p>
           <BookResult result={toolInvocation.result} />
         </div>
       );
@@ -83,8 +82,6 @@ const MessagePart = ({ part }: { part: MessagePart }) => {
 
 
   if (part.type === "text") {
-    console.log('RESULT IS', part.text);
-
     let jsonArr = [];
 
     if (part.text) {
@@ -94,12 +91,9 @@ const MessagePart = ({ part }: { part: MessagePart }) => {
       if (part.text.includes('```json')) {
         let result = part.text.substring(part.text.indexOf('{'));
         result = result.replaceAll('`', '');
-        // console.log(result);
         const jsonResult = JSON.parse(result);
         jsonArr = jsonResult.quiz;
-        // console.log('JSONARR ', jsonArr);
       }
-      // console.log('we\'re in text', part, part.text);
       return <div className="text-left">
         <p className="text-white text-base font-light md:text-lg pl-2">{title}</p>
         {jsonArr.map((item: any) => (
@@ -112,7 +106,6 @@ const MessagePart = ({ part }: { part: MessagePart }) => {
             ))}
           </div>
         ))}
-        {/* {part.text} */}
       </div>;
     }
 
@@ -130,7 +123,6 @@ export default function Home() {
   const [typingComplete, setTypingComplete] = useState(false);
 
   const scrollToBottom = () => {
-    console.log('scrolling to bottom NOW');
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -139,7 +131,6 @@ export default function Home() {
   }, [setMessages]);
 
   useEffect(() => {
-    console.log('messages changed', messages);
     scrollToBottom();
   }, [messages]); // Scroll when messages change
 
@@ -166,6 +157,7 @@ export default function Home() {
     <div className="flex flex-col relative justify-center w-full max-w-xl p-4 mx-auto h-full stretch gap-6">
       {messages.length === 0 && (
         <div>
+          <SplashCursor />
           <div className="flex w-full flex justify-center">
             <Typing
               className="text-5xl serif text-white mb-4"
@@ -245,7 +237,7 @@ export default function Home() {
               </RainbowButton>
             </div>
           </div>
-          <div className="mb-10 mt-20 mb-28 h-full overflow-auto">
+          <div className="mb-10 mt-20 mb-28 h-full w-full overflow-auto">
             <ScrollArea>
               {messages.map((m) => (
                 <div key={m.id} className="flex flex-col items-end gap-2 animate-in mt-2 width-full">
@@ -254,7 +246,7 @@ export default function Home() {
                       <p className="text-end text-base md:text-lg">{m.content}</p>
                     </div>
                   ) : (
-                    <div className="rounded-xl flex gap-2 p-2 pr-6 mt-2 mb-2 mr-5 w-auto items-start">
+                    <div className="rounded-xl flex gap-2 p-2 pr-6 mt-2 mb-2 w-full items-start">
                       {status === "streaming" && (
                         <div className="flex items-center space-x-4 width-full items-start">
                           <Skeleton className="h-12 w-12 rounded-full" />
@@ -281,42 +273,54 @@ export default function Home() {
                   )}
                 </div>
               ))}
+              <div ref={messagesEndRef} />
+
               <ScrollBar />
             </ScrollArea>
-
           </div>
-          <div ref={messagesEndRef} />
+
+          {/* <div ref={messagesEndRef} /> */}
 
           {showForm && (
-            <form
-              key="chat-form"
-              onSubmit={handleSubmit}
-              className="fixed bottom-0 z-10 p-4 right-0 w-full flex items-center justify-center"
-            >
-              <div className="relative w-[600px]">
-                {messages.length > 0 && (
-                  <div className="relative w-full mt-8">
-                    <BodleianTextarea
-                      key="chat-textarea"
-                      className=" min-h-[none] sans-serif text-base md:text-lg"
-                      value={input}
-                      rows={3}
-                      placeholder="Ask or Answer away..."
-                      onChange={handleInputChange}
-                    />
-                    <Button
-                      type="submit"
-                      disabled={status === "streaming"}
-                      size="default"
-                      variant="outline"
-                      className="absolute bottom-2 right-2 ml-4"
-                    >
-                      Send
-                    </Button>
-                  </div>
-                )}
-              </div>
-            </form>
+            <div>
+              <RainbowButton
+                className="font-medium text-base md:text-lg text-left justify-start m-2 px-4 absolute bottom-28 right-10 ml-4"
+                onClick={scrollToBottom}
+              >
+                <ArrowDownToLine className="w-5 h-5 text-white/90" />
+              </RainbowButton>
+              <form
+                id="form"
+                key="chat-form"
+                onSubmit={handleSubmit}
+                className="fixed bottom-0 z-10 p-4 right-0 w-full flex items-center justify-center"
+              >
+                <div className="relative w-[600px]">
+                  {messages.length > 0 && (
+                    <div className="relative w-full px-4">
+
+                      <BodleianTextarea
+                        key="chat-textarea"
+                        className=" min-h-[none] sans-serif text-base md:text-lg"
+                        value={input}
+                        rows={3}
+                        placeholder="Ask or Answer away..."
+                        onChange={handleInputChange}
+                      />
+                      <Button
+                        type="submit"
+                        disabled={status === "streaming"}
+                        size="default"
+                        variant="outline"
+                        className="absolute bottom-3 right-8 ml-4"
+                      >
+                        Send
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </form>
+            </div>
           )}
         </div>
       )}
