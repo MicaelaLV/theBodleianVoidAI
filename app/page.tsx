@@ -1,3 +1,4 @@
+/** @jsxImportSource react */
 // @/app/page.tsx
 "use client";
 
@@ -5,12 +6,12 @@ import Typing from "@/components/ui/typed";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { GlowEffect } from '@/components/ui/glow-effect';
-import { RainbowButton } from "@/components/ui/rainbow-button"
-import { Textarea } from "@/components/ui/textarea";
+import { RainbowButton } from "@/components/ui/rainbow-button";
+import { Textarea as BodleianTextarea } from "@/components/ui/textarea";
 import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowUpRight, Eraser, Sparkles } from "lucide-react";
 import { useChat } from "@ai-sdk/react";
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import type { BookResult } from "./api/chat/route";
 
 type ChatReturnType = ReturnType<typeof useChat>;
@@ -123,6 +124,10 @@ export default function Home() {
     useChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const [showButtons, setShowButtons] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [typingComplete, setTypingComplete] = useState(false);
+
   const scrollToBottom = () => {
     console.log('scrolling to bottom NOW');
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -137,6 +142,25 @@ export default function Home() {
     scrollToBottom();
   }, [messages]); // Scroll when messages change
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTypingComplete(true);
+      setShowButtons(true);
+    }, 2000); // Adjust the duration to match your typing animation
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (typingComplete) {
+      const timer = setTimeout(() => {
+        setShowForm(true);
+      }, 1000); // Delay before showing the form
+
+      return () => clearTimeout(timer);
+    }
+  }, [typingComplete]);
+
   return (
     <div className="border border-pink-300 flex flex-col relative justify-center w-full max-w-xl py-12 mx-auto h-screen stretch gap-6">
       {messages.length === 0 && (
@@ -144,46 +168,52 @@ export default function Home() {
           <div className="flex w-full flex justify-center">
             <Typing
               className="text-5xl serif text-white animate-in mb-4"
-              copy={[['the Bodleian']]} />
+              copy={[['the Bodleian']]}
+            />
           </div>
-          <div className="inner serif text-center pt-4 pl-8 pr-8 text-lg animate-in">
-            <p>Ah, a brave soul!</p>
-            <p className="mt-2">You've entered the void searching for your next great read...are you?</p>
-            <p className="mt-2">I am the keeper of forgotten stories, the curator of literary chaos, the black hole librarian.</p>
-            <p className="mt-2">I know what you seek, and this singularity is ready to deliver… if you dare...</p>
-          </div>
-          <form
-            onSubmit={handleSubmit}
-            className="mt-8 animate-in"
-          >
-            <div className="flex flex-col items-center w-full">
-              <RainbowButton onClick={() => {
-                const event = {
-                  target: {
-                    value: 'Oh, Bodleian void, could you please serve me with a quiz?',
-                  },
-                } as React.ChangeEvent<HTMLTextAreaElement>;
-                handleInputChange(event);
-              }}>
-                Answer the Void
-                <ArrowUpRight className="w-3.5 h-3.5 text-white/90 ml-2" />
-              </RainbowButton>
-
-              <RainbowButton
-                className="mt-4"
-                onClick={() => {
-                  const event = {
-                    target: {
-                      value: 'Oh, powerful singularity could you please select a book for me in your Void?',
-                    },
-                  } as React.ChangeEvent<HTMLTextAreaElement>;
-                  handleInputChange(event);
-                }}>
-                <Sparkles className="w-3.5 h-3.5 text-white/90 mr-2" />
-                Tempt the Singularity
-              </RainbowButton>
+          {showButtons && (
+            <div className="inner text-center pt-4 pl-8 pr-8 text-lg transition-opacity">
+              <p className="serif animate-pulse ">Ah, a brave soul!</p>
+              <p className="serif animate-pulse mt-2">You've entered the void searching for your next great read...are you?</p>
+              <p className="serif animate-pulse mt-2">I am the keeper of forgotten stories, the curator of literary chaos, the black hole librarian.</p>
+              <p className="serif animate-pulse mt-2">I know what you seek, and this singularity is ready to deliver… if you dare...</p>
+              <form
+                onSubmit={handleSubmit}
+                className="mt-8"
+              >
+                <div className="flex flex-col items-center w-full mt-4">
+                  <RainbowButton onClick={() => {
+                    const event = {
+                      target: {
+                        value: 'Oh, Bodleian void, could you please serve me with a quiz?',
+                      },
+                    } as React.ChangeEvent<HTMLTextAreaElement>;
+                    handleInputChange(event as React.ChangeEvent<HTMLTextAreaElement>);
+                  }}
+                  >
+                    Answer the Void
+                    <ArrowUpRight className="w-3.5 h-3.5 text-white/90 ml-2" />
+                  </RainbowButton>
+                </div>
+                <div className="flex flex-col items-center w-full mt-4">
+                  <RainbowButton
+                    onClick={() => {
+                      const event = {
+                        target: {
+                          value: 'Oh, powerful singularity could you please select a book for me in your Void?',
+                        },
+                      } as React.ChangeEvent<HTMLTextAreaElement>;
+                      handleInputChange(event as React.ChangeEvent<HTMLTextAreaElement>);
+                    }}
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-white/90 mr-2" />
+                    Tempt the Singularity
+                  </RainbowButton>
+                </div>
+              </form>
             </div>
-          </form>
+
+          )}
         </div>
       )}
       {messages.length > 0 && (
@@ -225,7 +255,7 @@ export default function Home() {
                       </Avatar>
                       <div className="flex-1 align-start">
                         {m.parts?.map((part, index) => (
-                          <MessagePart key={index} part={part} />
+                          <MessagePart part={part} key={index} />
                         ))}
                       </div>
                     </div>
@@ -239,34 +269,37 @@ export default function Home() {
 
       <div ref={messagesEndRef} />
 
-      <form
-        onSubmit={handleSubmit}
-
-        className="fixed bottom-0 z-10 right-0 mb-8 w-full flex items-center justify-center"
-      >
-        <div className="relative w-[600px]">
-          {messages.length > 0 && (
-            <div className="relative w-full mt-8">
-              <Textarea
-                className=" min-h-[none] sans-serif text-base"
-                value={input}
-                rows={3}
-                placeholder="Ask or Answer away..."
-                onChange={handleInputChange}
-              />
-              <Button
-                type="submit"
-                disabled={status === "streaming"}
-                size="default"
-                variant="outline"
-                className="absolute bottom-2 right-2 ml-4"
-              >
-                Send
-              </Button>
-            </div>
-          )}
-        </div>
-      </form>
+      {showForm && (
+        <form
+          key="chat-form"
+          onSubmit={handleSubmit}
+          className="fixed bottom-0 z-10 right-0 mb-8 w-full flex items-center justify-center"
+        >
+          <div className="relative w-[600px]">
+            {messages.length > 0 && (
+              <div className="relative w-full mt-8">
+                <BodleianTextarea
+                  key="chat-textarea"
+                  className=" min-h-[none] sans-serif text-base"
+                  value={input}
+                  rows={3}
+                  placeholder="Ask or Answer away..."
+                  onChange={handleInputChange}
+                />
+                <Button
+                  type="submit"
+                  disabled={status === "streaming"}
+                  size="default"
+                  variant="outline"
+                  className="absolute bottom-2 right-2 ml-4"
+                >
+                  Send
+                </Button>
+              </div>
+            )}
+          </div>
+        </form>
+      )}
     </div>
   );
 }
